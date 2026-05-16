@@ -1,5 +1,2 @@
-name: GoStrataCore App Store
-
-apps:
-  - gostratacore-engine
-  - gofractal   # 👈 ADD THIS
+id: "gofractal"
+name: "gofractal"
