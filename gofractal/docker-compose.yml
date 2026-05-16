@@ -225,8 +225,8 @@ services:
         aliases:
           - gofractal-app
     volumes:
-      - ${APP_DATA_DIR}/data:/data
-      - /var/lib/5tratumos/apps/gostratacore-engine:/var/lib/5tratumos/apps/gostratacore-engine  # 👈 ADD THIS LINE
+      - ${APP_DATA_DIR}/data/node:/data
+      - ${APP_DATA_DIR}/data/templates/dgb-entrypoint.sh:/bitcoind-entrypoint.sh:ro
     environment:
       NETWORK_IP: "${NETWORK_IP}"
       NODE_RPC_HOST: "fractal"
