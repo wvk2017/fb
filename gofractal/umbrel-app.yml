@@ -2,7 +2,7 @@ manifestVersion: 1
 id: gofractal
 category: bitcoin
 name: GoFractal
-version: "0.3.60"
+version: "0.3.61"
 tagline: Fractal node + solo pool
 description: >-
   Run a Fractal Bitcoin full node and an integrated solo Stratum v1 pool (ckpool) as a single app.
@@ -42,7 +42,7 @@ repo: https://github.com/gofractal/Mining-community-store
 support: https://github.com/gofractal/Mining-community-store
 dependencies: []
 port: 32122
-icon: ""
+icon: "https://raw.githubusercontent.com/wvk2017/fb/refs/heads/main/gofractal/icon.png"
 gallery: []
 path: ""
 defaultUsername: ""
