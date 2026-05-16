@@ -1,5 +1,5 @@
 manifestVersion: 1
-id: gostratacore-engine
+id: gofractal
 category: bitcoin
 name: GSC Engine
 version: "1.6.1"
@@ -24,4 +24,4 @@ path: ""
 defaultUsername: ""
 defaultPassword: ""
 
-submitter: GoStrataCore
+submitter: gofractal
