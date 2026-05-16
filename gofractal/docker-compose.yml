@@ -210,12 +210,13 @@ healthcheck:
     networks:
     default:
     aliases:
-       - axefb-app
+       - gofractal-app
    umbrel_main_network:
      aliases:
-       - axefb-app
+       - gofractal-app
  volumes:
    - ${APP_DATA_DIR}/data:/data
+   - ${APP_DATA_DIR}/data/pool/config:/config
     environment:
       NODE_RPC_HOST: "fractal"
       NODE_RPC_PORT: "32123"
@@ -224,7 +225,7 @@ healthcheck:
       CKPOOL_STATUS_DIR: "/data/pool/www/pool"
       APP_CHANNEL: "STABLE"
       BCHN_IMAGE: "ellevix/fractald:0.3.0"
-      CKPOOL_IMAGE: "ghcr.io/willitmod/docker-ckpool-solo:590fb2a"
+      CKPOOL_IMAGE: "ghcr.io/getumbrel/docker-ckpool-solo:590fb2a"
       STATIC_DIR: "/app/static"
 
 networks:
