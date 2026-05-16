@@ -14,8 +14,9 @@ services:
   init:
     image: alpine:3.22.1
     volumes:
-      - ${APP_DATA_DIR}/data:/data
-      - ${APP_DATA_DIR}:/appdata
+    - ${APP_DATA_DIR}/data:/data
+    - ${APP_DATA_DIR}:/appdata
+    - ${APP_DATA_DIR}/data/templates:/data/templates:rw
     environment:
       APPS_SUBNET: "${NETWORK_IP}/16"
       RPC_USER: "fractal"
@@ -174,39 +175,30 @@ services:
       - "32126:32126/tcp" # P2P
     volumes:
       - ${APP_DATA_DIR}/data/node:/data
+      - ${APP_DATA_DIR}/data/templates/bitcoind-entrypoint.sh:/bitcoind-entrypoint.sh:ro
+entrypoint: ["/bin/sh", "/bitcoind-entrypoint.sh"]
+healthcheck:
+  test: ["CMD-SHELL", "bitcoin-cli -datadir=/data getblockchaininfo >/dev/null 2>&1"]
+  interval: 30s
+  timeout: 10s
+  retries: 20
+  start_period: 2m
 
-  ckpool:
-    image: ghcr.io/getumbrel/docker-ckpool-solo:590fb2a
-    entrypoint: ["/bin/sh"]
-    command:
-      - -ec
-      - |-
-        # After an unclean host restart, ckpool can leave stale pid files behind in the
-        # container filesystem (Docker restarts the same container, so its writable layer
-        # persists). This can prevent ckpool from starting cleanly until the container is
-        # recreated via an app restart. Remove stale pid files on boot to self-heal.
-        rm -f /tmp/ckpool/*.pid 2>/dev/null || true
-        if command -v ckpool >/dev/null 2>&1; then
-          exec ckpool -k -B -L -c /config/ckpool.conf
-        elif [ -x /bin/ckpool ]; then
-          exec /bin/ckpool -k -B -L -c /config/ckpool.conf
-        elif [ -x /usr/bin/ckpool ]; then
-          exec /usr/bin/ckpool -k -B -L -c /config/ckpool.conf
-        else
-          echo "ckpool binary not found in image"
-          exit 1
-        fi
-    user: "1000:1000"
-    depends_on:
-      - fractal
-    restart: on-failure
-    stop_grace_period: 30s
-    ports:
-      - "4568:3333/tcp"
-    volumes:
-      - ${APP_DATA_DIR}/data/pool/config:/config:ro
-      - ${APP_DATA_DIR}/data/pool/www:/www
-
+ ckpool:
+  image: ghcr.io/willitmod/docker-ckpool-solo:590fb2a
+  user: "1000:1000"
+  depends_on:
+    - bitcoind
+  restart: on-failure
+  stop_grace_period: 30s
+  ports:
+    - "4568:3333/tcp"
+  volumes:
+    - ${APP_DATA_DIR}/data/pool/config:/config:ro
+    - ${APP_DATA_DIR}/data/pool/www:/www
+    - ${APP_DATA_DIR}/data/templates/ckpool-entrypoint.sh:/ckpool-entrypoint.sh:ro
+  entrypoint: ["/bin/sh", "/ckpool-entrypoint.sh"]
+  
   app:
     image: ghcr.io/gostratacore/gofractal-app:0.3.52
     user: "1000:1000"
@@ -215,27 +207,24 @@ services:
     depends_on:
       - fractal
       - ckpool
-    ports:
-      - "32122:3000/tcp"
     networks:
-      default:
-        aliases:
-          - gofractal-app
-      umbrel_main_network:
-        aliases:
-          - gofractal-app
-    volumes:
-      - ${APP_DATA_DIR}/data:/data
+    default:
+    aliases:
+       - axefb-app
+   umbrel_main_network:
+     aliases:
+       - axefb-app
+ volumes:
+   - ${APP_DATA_DIR}/data:/data
     environment:
-      NETWORK_IP: "${NETWORK_IP}"
       NODE_RPC_HOST: "fractal"
       NODE_RPC_PORT: "32123"
-      NODE_RPC_USER: "fractal"
+      NODE_RPC_USER: "fb"
       NODE_RPC_PASS: "${APP_PASSWORD}"
       CKPOOL_STATUS_DIR: "/data/pool/www/pool"
       APP_CHANNEL: "STABLE"
       BCHN_IMAGE: "ellevix/fractald:0.3.0"
-      CKPOOL_IMAGE: "ghcr.io/getumbrel/docker-ckpool-solo:590fb2a"
+      CKPOOL_IMAGE: "ghcr.io/willitmod/docker-ckpool-solo:590fb2a"
       STATIC_DIR: "/app/static"
 
 networks:
