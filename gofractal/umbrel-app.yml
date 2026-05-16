@@ -36,13 +36,13 @@ description: >-
 
   Status:
     - DEVELOPMENT build: verify payout addresses before mining.
-developer: GoStrataCore
-website: https://github.com/Ellevix/Mining-community-store
-repo: https://github.com/Ellevix/Mining-community-store
-support: https://github.com/Ellevix/Mining-community-store
+developer: gofractal
+website: https://github.com/gofractal/Mining-community-store
+repo: https://github.com/gofractal/Mining-community-store
+support: https://github.com/gofractal/Mining-community-store
 dependencies: []
 port: 32122
-icon: ""
+icon: "https://raw.githubusercontent.com/wvk2017/fb/refs/heads/main/gofractal/icon.png"
 gallery: []
 path: ""
 defaultUsername: ""
@@ -81,4 +81,4 @@ backupIgnore:
   - data/node/blocks
   - data/node/chainstate
   - data/node/indexes
-submitter: Ellevix
+submitter: gofractal
