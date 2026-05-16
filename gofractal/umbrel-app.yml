@@ -1,8 +1,8 @@
 manifestVersion: 1
-id: fb-gofractal
+id: gofractal
 category: bitcoin
 name: GoFractal
-version: "0.3.55"
+version: "0.3.60"
 tagline: Fractal node + solo pool
 description: >-
   Run a Fractal Bitcoin full node and an integrated solo Stratum v1 pool (ckpool) as a single app.
@@ -37,9 +37,9 @@ description: >-
   Status:
     - DEVELOPMENT build: verify payout addresses before mining.
 developer: gofractal
-website: https://github.com/Ellevix/Mining-community-store
-repo: https://github.com/Ellevix/Mining-community-store
-support: https://github.com/Ellevix/Mining-community-store
+website: https://github.com/gofractal/Mining-community-store
+repo: https://github.com/gofractal/Mining-community-store
+support: https://github.com/gofractal/Mining-community-store
 dependencies: []
 port: 32122
 icon: ""
