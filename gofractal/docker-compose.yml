@@ -16,7 +16,6 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data:/data
       - ${APP_DATA_DIR}:/appdata
-      - /var/lib/5tratumos/shared:/shared
     environment:
       APPS_SUBNET: "${NETWORK_IP}/16"
       RPC_USER: "fractal"
@@ -208,27 +207,14 @@ services:
       - ${APP_DATA_DIR}/data/pool/config:/config:ro
       - ${APP_DATA_DIR}/data/pool/www:/www
 
-  init-shared-permissions:
-    image: alpine:3.19
-    command: >
-      sh -c "mkdir -p /shared/gostratacore/coins &&
-             chown -R 1000:1000 /shared"
-    volumes:
-      - ${APP_DATA_DIR}/data/shared:/shared
-    restart: "no"
-
   app:
-    image: ghcr.io/gostratacore/gofractal-app:0.4.03
+    image: ghcr.io/gostratacore/gofractal-app:0.3.52
     user: "1000:1000"
     restart: on-failure
     stop_grace_period: 30s
     depends_on:
-      fractal:
-        condition: service_started
-      ckpool:
-        condition: service_started
-      init-shared-permissions:
-        condition: service_completed_successfully
+      - fractal
+      - ckpool
     ports:
       - "32122:3000/tcp"
     networks:
@@ -240,9 +226,7 @@ services:
           - gofractal-app
     volumes:
       - ${APP_DATA_DIR}/data:/data
-      - ${APP_DATA_DIR}/data/pool/config:/config
-      - /var/lib/5tratumos/shared:/shared
-      - /var/lib/5tratumos/apps/gostratacore-engine:/var/lib/5tratumos/apps/gostratacore-engine
+      - /var/lib/5tratumos/apps/gostratacore-engine:/var/lib/5tratumos/apps/gostratacore-engine  # 👈 ADD THIS LINE
     environment:
       NETWORK_IP: "${NETWORK_IP}"
       NODE_RPC_HOST: "fractal"
@@ -250,7 +234,6 @@ services:
       NODE_RPC_USER: "fractal"
       NODE_RPC_PASS: "${APP_PASSWORD}"
       CKPOOL_STATUS_DIR: "/data/pool/www/pool"
-      CKPOOL_CONF_PATH: "/config/ckpool.conf"
       APP_CHANNEL: "STABLE"
       BCHN_IMAGE: "ellevix/fractald:0.3.0"
       CKPOOL_IMAGE: "ghcr.io/getumbrel/docker-ckpool-solo:590fb2a"
