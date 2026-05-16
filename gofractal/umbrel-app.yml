@@ -1,5 +1,5 @@
 manifestVersion: 1
-id: gofractal
+id: fb-gofractal
 category: bitcoin
 name: GoFractal
 version: "0.3.52"
@@ -36,7 +36,7 @@ description: >-
 
   Status:
     - DEVELOPMENT build: verify payout addresses before mining.
-developer: GoStrataCore
+developer: gofractal
 website: https://github.com/Ellevix/Mining-community-store
 repo: https://github.com/Ellevix/Mining-community-store
 support: https://github.com/Ellevix/Mining-community-store
@@ -81,4 +81,4 @@ backupIgnore:
   - data/node/blocks
   - data/node/chainstate
   - data/node/indexes
-submitter: Ellevix
+submitter: gofractal
