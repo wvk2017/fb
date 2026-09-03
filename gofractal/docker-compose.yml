@@ -224,7 +224,7 @@ healthcheck:
       NODE_RPC_PASS: "${APP_PASSWORD}"
       CKPOOL_STATUS_DIR: "/data/pool/www/pool"
       APP_CHANNEL: "STABLE"
-      BCHN_IMAGE: "ellevix/fractald:0.3.0"
+      BCHN_IMAGE: "wvk2017/nodes:fractal-bitcoin"
       CKPOOL_IMAGE: "ghcr.io/getumbrel/docker-ckpool-solo:590fb2a"
       STATIC_DIR: "/app/static"
 
